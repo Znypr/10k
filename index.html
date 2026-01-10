@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I was here for 10k — Znypr</title>
+<meta name="description" content="I was here for Znypr’s 10k. Download the ‘merch’, see milestones, and socials." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  :root{
+    --bg:#0b0b0b; --card:#0f0f10; --muted:#9aa0a6;
+    --ring:#2a2a2e; --text:#ffffff; --pad: clamp(16px, 3vw, 28px);
+    --radius: 18px; --max: 980px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif;
+    background: radial-gradient(1200px 1200px at 50% -200px,#1a1a1c 0%, transparent 50%), var(--bg);
+    color:var(--text); display:flex; align-items:center; justify-content:center; padding:40px 18px;
+  }
+  .wrap{width: min(var(--max), 100%); display:flex; flex-direction:column; gap:24px;}
+  .card{
+    background: linear-gradient(180deg, #111113, #0e0e0f);
+    border: 1px solid var(--ring); border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(0,0,0,.45); overflow:hidden;
+  }
+  .section{ padding: var(--pad); }
+  .hero{text-align:center; padding: clamp(28px, 6vw, 60px) var(--pad) clamp(18px, 4vw, 36px);}
+  .eyebrow{ letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600; font-size:12px; }
+  h1{ margin:8px 0 6px; font-size: clamp(28px, 6vw, 56px); line-height:1.06; font-weight:800; }
+  .sub{ color:var(--muted); font-size: clamp(14px, 2.5vw, 18px); }
+  .img-wrap{ margin-top: clamp(12px, 3vw, 18px); border-radius: 16px; overflow:hidden; border:1px solid #1f1f22; background:#0a0a0b; }
+  .img-wrap img{ display:block; width:100%; height:auto; }
+  .row{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+  .btn{
+    border:1px solid var(--ring); background:#151517; color:#fff;
+    padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .profile{ display:flex; align-items:center; gap:16px; justify-content:center; text-align:center; }
+  .pfp{ width:76px; height:76px; border-radius:50%; background: #0d0d0f; border:1px solid var(--ring); overflow:hidden; flex:0 0 auto; }
+  .pfp img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .name{ font-size: clamp(22px, 4.5vw, 34px); font-weight:800; }
+  .handle{ color:var(--muted); font-size:14px; }
+  .socials{ display:grid; grid-template-columns: repeat(4,1fr); gap:12px; text-align:center; }
+  @media (max-width:760px){ .socials{ grid-template-columns: repeat(2,1fr); } }
+  .soc{ border:1px solid var(--ring); border-radius:14px; padding:14px; background: linear-gradient(180deg, #121214, #0f0f10); }
+  .soc .logo{ width:28px; height:28px; margin:0 auto 10px; display:block; }
+  .soc .user{ font-weight:700; }
+  .soc .count{ color:var(--muted); font-size:13px; margin-top:2px; }
+  .milestones h2{ margin:0 0 6px; font-size: clamp(18px, 3.6vw, 24px); }
+  .milestones p{ margin:0 0 12px; color:var(--muted); }
+  .chart{ width:100%; height:240px; border-radius:14px; border:1px solid var(--ring); background:#0c0c0e; }
+  .footnote{ color:var(--muted); font-size:12px; text-align:center; margin-top:8px; }
+  .discord{ text-align:center; padding: var(--pad); }
+  .discord a{ display:inline-block; background:#5865F2; color:#fff; padding:12px 18px; border-radius:10px; text-decoration:none; font-weight:700; }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="card hero">
+      <div class="eyebrow">Limited moment</div>
+      <h1>I was here for 10k</h1>
+      <p class="sub">Right-click the image to save, or use the download button.</p>
+      <div class="img-wrap"><img src="merch.png" alt="Znypr 10k merch"></div>
+      <div class="row">
+        <a class="btn" href="merch.png" download>Download PNG</a>
+        <a class="btn" href="./">Refresh</a>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="card section">
+      <div class="profile">
+        <div class="pfp"><img src="profile.jpg" alt="Znypr"></div>
+        <div>
+          <div class="name">Znypr</div>
+          <div class="handle">@znypr</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIALS -->
+    <section class="card section">
+      <div class="socials">
+        <div class="soc">
+          <div class="logo">📺</div>
+          <div class="user">@znypr</div>
+          <div class="count">YouTube: 10,000</div>
+        </div>
+        <div class="soc">
+          <div class="logo">🎮</div>
+          <div class="user">@znypr</div>
+          <div class="count">Twitch: 9,000</div>
+        </div>
+        <div class="soc">
+          <div class="logo">🐦</div>
+          <div class="user">@znypr_</div>
+          <div class="count">Twitter: 1,000</div>
+        </div>
+        <div class="soc">
+          <div class="logo">🎵</div>
+          <div class="user">@znypr</div>
+          <div class="count">TikTok: 12,000</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MILESTONES -->
+    <section class="card section milestones">
+      <h2>Milestones</h2>
+      <p>Subs gained over the last 12 months.</p>
+      <div class="chart" id="chart"></div>
+      <p class="footnote">Based on YouTube Analytics data.</p>
+    </section>
+
+    <!-- DISCORD -->
+    <section class="card section discord">
+      <h2>Join the Znyperium</h2>
+      <a href="https://discord.gg/Hfdb59wdag" target="_blank">Join Discord</a>
+    </section>
+  </main>
+
+<script>
+  // Real monthly subs gained
+  const monthly = [50, 100, 0, 20, 30, 20, 180, 400, 2100, 3500, 3200];
+  const chart = document.getElementById('chart');
+  const max = Math.max(...monthly);
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS,'svg');
+  svg.setAttribute('viewBox','0 0 800 240');
+  const stepX = 800 / (monthly.length - 1);
+  let d="";
+  monthly.forEach((v,i)=>{
+    const x=i*stepX;
+    const y=240-(v/max*200)-20;
+    d+=(i===0?`M${x},${y}`:` L${x},${y}`);
+  });
+  const path = document.createElementNS(svgNS,'path');
+  path.setAttribute('d',d);
+  path.setAttribute('fill','none');
+  path.setAttribute('stroke','#fff');
+  path.setAttribute('stroke-width','2');
+  svg.appendChild(path);
+  chart.appendChild(svg);
+</script>
+</body>
+</html>
