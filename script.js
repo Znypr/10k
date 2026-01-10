@@ -120,18 +120,20 @@ window.addEventListener('popstate', (event) => {
 });
 
 // 4. Initial Load
+// 4. Initial Load
 const path = window.location.pathname.substring(1); 
 
-// ONLY let the server handle it if it's a specific legal file
+// Only let the server handle specific legal deep-links
 if (path === 'contact/impressum' || path === 'contact/datenschutz') {
-    // No JS intervention; browser loads the file via .htaccess
+    // No JS intervention; browser loads the file via .htaccess rule #1
 } 
-// OTHERWISE, handle it as an SPA tab (home, gear, contact)
+// Handle SPA tabs (home, gear, contact)
 else {
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
     
-    // If path is empty, it's 'home'
-    const target = path === '' ? 'home' : path;
+    // Clean up trailing slashes if they exist
+    const cleanPath = path.replace(/\/$/, "");
+    const target = cleanPath === '' ? 'home' : cleanPath;
     
     if (validTabs.includes(target)) {
         switchTab(target, false);
