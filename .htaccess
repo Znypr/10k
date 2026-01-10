@@ -1,8 +1,19 @@
 RewriteEngine On
 RewriteBase /
 
-# If the request is for a real file (like style.css or an image), serve it directly.
-RewriteCond %{REQUEST_FILENAME} !-f
+# 1. CLEAN LEGAL URLs (The new part)
+# If user types /legal/impressum, serve /legal/impressum.html
+RewriteCond %{REQUEST_URI} ^/legal/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
+
+# 2. SERVE REAL FILES
+# If the file exists (like style.css or legal/impressum.html), serve it.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 3. ROUTE EVERYTHING ELSE TO APP (Tabs)
+# If it's not a real file, send it to index.html for the JS router.
+RewriteRule ^ index.html [L]

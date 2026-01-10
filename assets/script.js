@@ -120,11 +120,14 @@ window.addEventListener('popstate', (event) => {
 });
 
 // 4. Initial Load
-const path = window.location.pathname.substring(1);
+const path = window.location.pathname.substring(1); 
 
-// UPDATE THIS LIST to match your Navbar buttons exactly:
+if (path.startsWith('assets/legal/')) {
+    return; 
+}
+
+// OTHERWISE, load the tab
 const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
-
 if (validTabs.includes(path)) {
     switchTab(path, false);
 } else {
