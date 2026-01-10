@@ -1,29 +1,48 @@
-<section class="card section" style="display:flex; justify-content:space-between; align-items:center;">
-    <div style="display:flex; align-items:center; gap:12px;">
-        <div class="pfp" style="width:48px; height:48px;"><img src="assets/profile.jpg"></div>
+<section class="card section header-layout">
+    <div class="profile-group">
+        <div class="pfp"><img src="assets/profile.jpg" alt="Profile"></div>
         <div>
-            <div style="font-weight:800; font-size:16px;">Znypr</div>
-            <div style="font-size:12px; color:var(--muted);">Content Creator</div>
+            <div class="profile-name">Znypr</div>
+            <div class="profile-role">Content Creator</div>
         </div>
     </div>
-    <div style="display:flex; align-items:center; gap:6px; background:#1a1a1c; padding:6px 12px; border-radius:100px; border:1px solid var(--ring);">
-        <div style="width:8px; height:8px; background:red; border-radius:50%; box-shadow: 0 0 10px red;"></div>
-        <span style="font-size:11px; font-weight:700; letter-spacing:0.05em;">OFFLINE</span>
-    </div>
-</section>
-
-<section class="card" style="padding:0; overflow:hidden;">
-    <div style="padding: 18px; border-bottom:1px solid var(--ring);">
-        <h2 style="margin:0; font-size:16px;">Latest Video</h2>
-    </div>
-    <div style="aspect-ratio: 16/9;">
-        <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/VID_ID_HERE" title="Latest Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <div class="status-badge status-offline" id="status-badge">
+        <div class="status-dot"></div>
+        <span>OFFLINE</span>
     </div>
 </section>
 
 <section class="card section">
-    <h3 style="margin-top:0;">Welcome</h3>
-    <p style="color:var(--muted); line-height:1.6;">
-        Road to 1 Million. I stream Rivals and vertical events on YouTube & TikTok.
-    </p>
+    <div class="milestone-header">
+        <div>
+            <div class="milestone-label">Current Mission</div>
+            <div class="milestone-target">Road to 100k</div>
+        </div>
+        <div class="milestone-current">
+            <div class="stat-big" id="stat-home-subs">...</div>
+            <div class="stat-small">Subscribers</div>
+        </div>
+    </div>
+
+    <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+    </div>
+</section>
+
+<section class="card section">
+    <h2 class="section-title">Hall of Fame</h2>
+    <p class="section-subtitle">Most viewed content.</p>
+
+    <h3 class="category-header">Top Videos</h3>
+    <div class="grid-2" id="hof-videos">
+        <p style="color:var(--muted); font-size:12px;">Loading Videos...</p>
+    </div>
+
+    <h3 class="category-header" style="margin-top: 24px;">Top Shorts</h3>
+    <div class="grid-3" id="hof-shorts">
+        <p style="color:var(--muted); font-size:12px;">Loading Shorts...</p>
+    </div>
+
+   
 </section>

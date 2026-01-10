@@ -592,3 +592,251 @@ footer a:hover { color: #888; }
     color: var(--muted);
     font-size: 20px;
 }
+
+/* --- HOME / HIGHLIGHTS STYLES --- */
+
+/* Status Badge */
+.status-badge {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 100px; border: 1px solid var(--ring);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+}
+
+.status-offline { background: #1a1a1c; color: var(--muted); }
+.status-live { background: #2a0000; color: #ff4444; border-color: #550000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
+
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+/* Milestone Progress Bar */
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: #2a2a2e;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fff, #999);
+    border-radius: 4px;
+    transition: width 1s ease-out;
+}
+
+/* Highlights Grid */
+.highlights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Highlight Card */
+.highlight-card {
+    text-decoration: none;
+    color: #fff;
+    group: hover;
+}
+
+.thumb-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9; /* Standard Video Shape */
+    border: 1px solid var(--ring);
+    margin-bottom: 8px;
+}
+
+.thumb-img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.highlight-card:hover .thumb-img {
+    transform: scale(1.05);
+}
+
+.highlight-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Badges on Thumbnail */
+.view-badge {
+    position: absolute;
+    bottom: 6px; left: 6px;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+}
+
+.type-badge {
+    position: absolute;
+    top: 6px; right: 6px;
+    background: #000; /* Default Black for Shorts */
+    color: #fff;
+    font-size: 9px; font-weight: 800; text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+/* --- HALL OF FAME GRIDS --- */
+
+/* Grid Layouts */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* Aspect Ratios */
+.thumb-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--ring);
+    margin-bottom: 8px;
+    background: #000;
+}
+
+.ratio-vertical {
+    aspect-ratio: 9/16; /* Tall for Shorts */
+}
+
+.ratio-landscape {
+    aspect-ratio: 16/9; /* Wide for Videos */
+}
+
+/* Images & Hover */
+.highlight-card {
+    text-decoration: none;
+    color: #fff;
+    display: block; /* Ensure the whole area is clickable */
+}
+
+.thumb-img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    opacity: 0.9;
+}
+
+.highlight-card:hover .thumb-img {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.highlight-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Badges */
+.view-badge {
+    position: absolute;
+    bottom: 4px; left: 4px;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+}
+
+.type-badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 8px; font-weight: 800; text-transform: uppercase;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.red-badge {
+    background: #cc0000;
+    border: none;
+}
+/* --- HOME TAB LAYOUTS --- */
+
+.header-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-name {
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.profile-role {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* Milestone Section */
+.milestone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+.milestone-label {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.milestone-target {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+}
+
+.milestone-current {
+    text-align: right;
+}
+
+.stat-big {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.stat-small {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 2px;
+}

@@ -1,0 +1,50 @@
+{
+    "socials": {
+        "youtube_subs": "44,515",
+        "twitch_followers": "10,102",
+        "tiktok_followers": "27,500",
+        "twitter_followers": "1,050",
+        "discord_members": "2,700"
+    },
+    "goals": {
+        "current_subs": 44515,
+        "goal_subs": 100000,
+        "live_status": "offline"
+    },
+    "hall_of_fame": {
+        "shorts": [
+            {
+                "title": "blocking 5 sniper shots at once in rivals!",
+                "views": "2.1M",
+                "thumb": "assets/highlights/short1.png",
+                "link": "https://youtube.com/shorts/LINK_HERE"
+            },
+            {
+                "title": "Do This To Snipe Faster In Roblox Rivals 🤫",
+                "views": "1.1M",
+                "thumb": "assets/highlights/short2.png",
+                "link": "https://youtube.com/shorts/LINK_HERE"
+            },
+            {
+                "title": "try this loadout for crazy knife clips",
+                "views": "1M",
+                "thumb": "assets/highlights/short3.png",
+                "link": "https://youtube.com/shorts/LINK_HERE"
+            }
+        ],
+        "videos": [
+            {
+                "title": "The *BEST* Settings in Rivals to MASTER Sniping!",
+                "views": "8.3K Views",
+                "thumb": "assets/highlights/video1.png",
+                "link": "https://youtu.be/LINK_HERE"
+            },
+            {
+                "title": "The Day I Hit NEMESIS In RANKED",
+                "views": "6K Views",
+                "thumb": "assets/highlights/video2.png",
+                "link": "https://youtu.be/LINK_HERE"
+            }
+        ]
+    }
+}
