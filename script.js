@@ -120,7 +120,6 @@ window.addEventListener('popstate', (event) => {
 });
 
 // 4. Initial Load
-// 4. Initial Load
 const path = window.location.pathname.substring(1); 
 
 // Only let the server handle specific legal deep-links

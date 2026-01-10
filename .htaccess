@@ -6,6 +6,8 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/tabs/%{REQUEST_URI}.html -f
 RewriteRule ^(.*)$ tabs/$1.html [L]
+RewriteRule ^contact/impressum$ tabs/contact/impressum.html [L]
+RewriteRule ^contact/datenschutz$ tabs/contact/datenschutz.html [L]
 
 # 2. SERVE EXISTING ASSETS (CSS/JS/Images)
 RewriteCond %{REQUEST_FILENAME} -f
