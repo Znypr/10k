@@ -4,6 +4,5 @@ RewriteBase /
 # If the request is for a real file (like style.css or an image), serve it directly.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# For everything else (like /gear, /partners), send it to index.html internally.
-RewriteRule ^ index.html [L]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
