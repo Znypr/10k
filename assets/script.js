@@ -119,13 +119,14 @@ window.addEventListener('popstate', (event) => {
     switchTab(tab, false); // false = don't push state again
 });
 
-// 4. Initial Load (Read the URL!)
-// Remove the leading slash (e.g., "/gear" -> "gear")
+// 4. Initial Load
 const path = window.location.pathname.substring(1);
-const validTabs = ['home', 'socials', 'shop', 'partners', 'gear', 'more'];
+
+// UPDATE THIS LIST to match your Navbar buttons exactly:
+const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
 
 if (validTabs.includes(path)) {
-    switchTab(path, false); // Load it without pushing new state
+    switchTab(path, false);
 } else {
-    switchTab('home', false); // Default to home
+    switchTab('home', false);
 }
