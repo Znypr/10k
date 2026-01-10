@@ -1,19 +1,17 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. CLEAN LEGAL URLs (The new part)
-# If user types /legal/impressum, serve /legal/impressum.html
-RewriteCond %{REQUEST_URI} ^/legal/
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html [L]
+# 1. ROUTE LEGAL FILES FROM NESTED TABS FOLDER
+# If user goes to /contact/impressum -> Serve tabs/contact/impressum.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}/tabs%{REQUEST_URI}.html -f
+RewriteRule ^(.*)$ tabs/$1.html [L]
 
-# 2. SERVE REAL FILES
-# If the file exists (like style.css or legal/impressum.html), serve it.
+# 2. SERVE EXISTING ASSETS (CSS/JS/Images)
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 3. ROUTE EVERYTHING ELSE TO APP (Tabs)
-# If it's not a real file, send it to index.html for the JS router.
+# 3. ROUTE VIRTUAL TABS (gear, socials, etc.)
+# If it's not a real file, send it to index.html for the JS router
 RewriteRule ^ index.html [L]
