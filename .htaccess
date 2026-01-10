@@ -1,17 +1,17 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. SPECIFIC MAPPING FOR LEGAL PAGES
-# This forces the clean URL to find the deep-nested file
-RewriteRule ^contact/impressum$ tabs/contact/impressum.html [L]
-RewriteRule ^contact/datenschutz$ tabs/contact/datenschutz.html [L]
+# 1. ACTUAL FILES (e.g., znypr.com/contact/impressum)
+# This checks if the file exists in the contact folder
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^/]+)$ $1.html [L]
 
-# 2. SERVE EXISTING ASSETS (CSS, JS, Images)
-# If the file actually exists (like /style.css), serve it directly
+# 2. SERVE ASSETS (CSS/JS/Images)
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 3. ROUTE VIRTUAL TABS (SPA logic)
-# Everything else (like /gear or /contact) goes to index.html
+# 3. VIRTUAL TABS (SPA)
+# Everything else goes to index.html for script.js to handle
 RewriteRule ^ index.html [L]

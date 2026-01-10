@@ -20,7 +20,7 @@ async function switchTab(tabName, updateHistory = true) {
     try {
         // Fetch the file. Default to home.html if empty
         const file = tabName === '' || tabName === '/' ? 'home' : tabName;
-        const response = await fetch(`tabs/${file}.html`);
+        const response = await fetch(`${file}.html`);
         
         if (response.ok) {
             contentArea.innerHTML = await response.text();
@@ -120,19 +120,15 @@ window.addEventListener('popstate', (event) => {
 });
 
 // 4. Initial Load
-const path = window.location.pathname.substring(1); 
+const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
 
-// Only let the server handle specific legal deep-links
-if (path === 'contact/impressum' || path === 'contact/datenschutz') {
-    // No JS intervention; browser loads the file via .htaccess rule #1
+// If it's a legal path, let the browser load the actual file
+if (path.startsWith('contact/')) {
+    // No JS intervention
 } 
-// Handle SPA tabs (home, gear, contact)
 else {
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
-    
-    // Clean up trailing slashes if they exist
-    const cleanPath = path.replace(/\/$/, "");
-    const target = cleanPath === '' ? 'home' : cleanPath;
+    const target = path === '' ? 'home' : path;
     
     if (validTabs.includes(target)) {
         switchTab(target, false);
