@@ -122,10 +122,12 @@ window.addEventListener('popstate', (event) => {
 // 4. Initial Load
 const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
 
-// If it's a legal path, let the browser load the actual file
-if (path.startsWith('contact/')) {
+// IF IT IS A LEGAL PATH: Let the browser/server handle it.
+// This allows Namecheap to use .htaccess to hide the .html
+if (path === 'contact/impressum' || path === 'contact/datenschutz') {
     // No JS intervention
 } 
+// SPA TABS: Handle dynamic loading
 else {
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
     const target = path === '' ? 'home' : path;
