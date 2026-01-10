@@ -1,17 +1,17 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. HIDE .HTML FOR LEGAL FOLDER
-# This maps znypr.com/contact/impressum -> contact/impressum.html
+# 1. LEGAL FOLDER (znypr.com/contact/impressum -> contact/impressum.html)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(contact/[^/]+)$ $1.html [L]
 
-# 2. SERVE EXISTING ASSETS
+# 2. SERVE EXISTING ASSETS (CSS/JS/Images)
+# This prevents /style.css from being redirected to index.html
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 3. ROUTE VIRTUAL TABS TO SPA
-# For /gear, /socials, etc.
+# 3. SPA ROUTING
+# Everything else (gear, socials, etc.) loads index.html
 RewriteRule ^ index.html [L]

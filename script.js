@@ -119,15 +119,13 @@ window.addEventListener('popstate', (event) => {
     switchTab(tab, false); // false = don't push state again
 });
 
-// 4. Initial Load
+// 4. Initial Load Logic
 const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
 
-// IF IT IS A LEGAL PATH: Let the browser/server handle it.
-// This allows Namecheap to use .htaccess to hide the .html
+// If it's a legal sub-page, let the browser load it normally
 if (path === 'contact/impressum' || path === 'contact/datenschutz') {
     // No JS intervention
 } 
-// SPA TABS: Handle dynamic loading
 else {
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
     const target = path === '' ? 'home' : path;
