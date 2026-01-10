@@ -1,18 +1,17 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. FIXED: ROUTE LEGAL FILES FROM NESTED TABS FOLDER
-# Note the / after tabs/ - this allows the server to enter the folder
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/tabs/%{REQUEST_URI}.html -f
-RewriteRule ^(.*)$ tabs/$1.html [L]
+# 1. SPECIFIC MAPPING FOR LEGAL PAGES
+# This forces the clean URL to find the deep-nested file
 RewriteRule ^contact/impressum$ tabs/contact/impressum.html [L]
 RewriteRule ^contact/datenschutz$ tabs/contact/datenschutz.html [L]
 
-# 2. SERVE EXISTING ASSETS (CSS/JS/Images)
+# 2. SERVE EXISTING ASSETS (CSS, JS, Images)
+# If the file actually exists (like /style.css), serve it directly
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 3. ROUTE VIRTUAL TABS (gear, socials, etc.)
+# 3. ROUTE VIRTUAL TABS (SPA logic)
+# Everything else (like /gear or /contact) goes to index.html
 RewriteRule ^ index.html [L]
