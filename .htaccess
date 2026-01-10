@@ -1,17 +1,17 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. ROUTE LEGAL FILES FROM NESTED TABS FOLDER
-# If user goes to /contact/impressum -> Serve tabs/contact/impressum.html
+# 1. FIXED: ROUTE LEGAL FILES FROM NESTED TABS FOLDER
+# This rule tells the server: "If it's a deep path, look in /tabs/"
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/tabs%{REQUEST_URI}.html -f
+RewriteCond %{REQUEST_URI} !=/contact
+RewriteCond %{DOCUMENT_ROOT}/tabs/%{REQUEST_URI}.html -f
 RewriteRule ^(.*)$ tabs/$1.html [L]
 
-# 2. SERVE EXISTING ASSETS (CSS/JS/Images)
+# 2. SERVE EXISTING ASSETS
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 3. ROUTE VIRTUAL TABS (gear, socials, etc.)
-# If it's not a real file, send it to index.html for the JS router
+# 3. ROUTE VIRTUAL TABS (SPA logic)
 RewriteRule ^ index.html [L]

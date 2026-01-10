@@ -122,16 +122,19 @@ window.addEventListener('popstate', (event) => {
 // 4. Initial Load
 const path = window.location.pathname.substring(1); 
 
-// IF it's a deep path (like contact/impressum), let the server handle it
-if (path.includes('/')) {
-    // No JS intervention; browser loads the file via .htaccess rule #1
+// ONLY let the server handle it if it's a specific legal file
+if (path === 'contact/impressum' || path === 'contact/datenschutz') {
+    // No JS intervention; browser loads the file via .htaccess
 } 
 // OTHERWISE, handle it as an SPA tab (home, gear, contact)
 else {
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
     
-    if (validTabs.includes(path)) {
-        switchTab(path, false);
+    // If path is empty, it's 'home'
+    const target = path === '' ? 'home' : path;
+    
+    if (validTabs.includes(target)) {
+        switchTab(target, false);
     } else {
         switchTab('home', false);
     }
