@@ -14,4 +14,4 @@ RewriteRule ^ - [L]
 
 # 3. SPA ROUTING
 # Everything else (gear, socials, etc.) loads index.html
-RewriteRule ^ index.html [L]
+RewriteRule ^(home|gear|socials|partners|merch|contact)$ index.html [L]
