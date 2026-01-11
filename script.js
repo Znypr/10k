@@ -57,6 +57,7 @@ async function loadStats() {
         safeUpdate('stat-tt', data.socials.tiktok_followers + " Followers");
         safeUpdate('stat-tw', data.socials.twitch_followers + " Followers");
         safeUpdate('stat-x',  data.socials.twitter_followers + " Followers");
+        safeUpdate('stat-di', data.socials.discord_members + " Members");
 
         // Home Tab
         safeUpdate('stat-home-subs', data.socials.youtube_subs);
