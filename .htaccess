@@ -7,7 +7,7 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
 # 2. Prevent directory listing
-Options -Indexes
+Options -Indexes -MultiViews
 
 # 3. Route "contact/..." to the .html files in that folder
 RewriteCond %{REQUEST_FILENAME} !-f
