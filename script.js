@@ -1,25 +1,31 @@
-const contentArea = document.getElementById('content-area');
-
 // 1. The Main Switcher
 async function switchTab(tabName, updateHistory = true) {
+    // CRITICAL FIX: Find the element *inside* the function to ensure it exists
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) {
+        console.error("Critical: Could not find #content-area element.");
+        return;
+    }
+
     // A. Highlight the button
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    
     // Handle edge case: 'home' might be '' in the URL
     const targetBtn = tabName === '' ? 'home' : tabName;
+    // Use a safer selector check
     const activeBtn = document.querySelector(`button[onclick="switchTab('${targetBtn}')"]`);
     if(activeBtn) activeBtn.classList.add('active');
 
     // B. Update URL (The Clean URL Magic)
     if (updateHistory) {
-        // If tab is 'home', we make the URL clean (znypr.com/), otherwise /gear
         const newPath = tabName === 'home' ? '/' : tabName;
         history.pushState({ tab: tabName }, '', newPath);
     }
 
     // C. Load Content
     try {
-        // Fetch the file. Default to home.html if empty
         const file = tabName === '' || tabName === '/' ? 'home' : tabName;
+        // Ensure we look in the pages folder
         const response = await fetch(`/pages/${file}.html`);
         
         if (response.ok) {
@@ -31,7 +37,7 @@ async function switchTab(tabName, updateHistory = true) {
             // E. Re-init Icons (if used)
             if(window.lucide) window.lucide.createIcons();
         } else {
-            // If 404, fallback to home
+            // If 404, fallback to home (prevent infinite loop)
             if (tabName !== 'home') switchTab('home');
         }
     } catch (e) {
@@ -40,7 +46,7 @@ async function switchTab(tabName, updateHistory = true) {
     }
 }
 
-// 2. The Stats Automation (From previous step)
+// 2. The Stats Automation
 async function loadStats() {
     try {
         const response = await fetch('/assets/stats.json');
@@ -115,25 +121,30 @@ async function loadStats() {
 
 // 3. Handle "Back" Button
 window.addEventListener('popstate', (event) => {
-    // When user clicks Back in browser, load that tab
     const tab = event.state ? event.state.tab : 'home';
-    switchTab(tab, false); // false = don't push state again
+    switchTab(tab, false);
 });
 
-// 4. Initial Load Logic
-const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
+// 4. Initial Load Logic (WRAPPED IN DOMContentLoaded)
+document.addEventListener("DOMContentLoaded", () => {
+    const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
 
-// If it's a legal sub-page, let the browser load it normally
-if (path === 'contact/impressum' || path === 'contact/datenschutz') {
-    // No JS intervention
-} 
-else {
-    const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
-    const target = path === '' ? 'home' : path;
+    // If it's a legal sub-page, let the browser load it normally
+    if (path.startsWith('contact/') && path !== 'contact') {
+        // No JS intervention for legal pages
+        return;
+    } 
     
-    if (validTabs.includes(target)) {
+    const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
+    // Handle 'contact' specifically to load the app tab, not the folder
+    let target = path === '' ? 'home' : path;
+    
+    // If user goes to /contact (clean), treat as contact tab
+    if (target === 'contact') {
+        switchTab('contact', false);
+    } else if (validTabs.includes(target)) {
         switchTab(target, false);
     } else {
         switchTab('home', false);
     }
-}
+});
