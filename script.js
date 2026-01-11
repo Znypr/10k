@@ -20,7 +20,7 @@ async function switchTab(tabName, updateHistory = true) {
     try {
         // Fetch the file. Default to home.html if empty
         const file = tabName === '' || tabName === '/' ? 'home' : tabName;
-        const response = await fetch(`${file}.html`);
+        const response = await fetch(`/${file}.html`);
         
         if (response.ok) {
             contentArea.innerHTML = await response.text();
@@ -43,7 +43,7 @@ async function switchTab(tabName, updateHistory = true) {
 // 2. The Stats Automation (From previous step)
 async function loadStats() {
     try {
-        const response = await fetch('assets/stats.json');
+        const response = await fetch('/assets/stats.json');
         const data = await response.json();
 
         // Helpers
