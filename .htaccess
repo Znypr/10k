@@ -1,19 +1,18 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. PRIORITY: If the file actually exists (like style.css), SERVE IT and stop.
-# This prevents the server from trying to turn your CSS into HTML.
+# 1. CRITICAL: If the file exists (style.css, images, etc.), SERVE IT AND STOP.
+# This must be the very first rule.
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# 2. SECURITY: Prevent listing folders
+# 2. Prevent directory listing
 Options -Indexes
 
-# 3. CONTACT/LEGAL: Route specific legal pages
+# 3. Route "contact/..." to the .html files in that folder
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(contact/.+)$ $1.html [L]
 
-# 4. SPA ROUTING: Route virtual tabs to index.html
-# Only fires if the file didn't exist (Step 1).
+# 4. Route your "Tabs" (gear, home, etc.) to index.html
 RewriteRule ^(home|gear|socials|partners|merch|contact)$ index.html [L]
