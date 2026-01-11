@@ -1,21 +1,19 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. PREVENT DIRECT FOLDER ACCESS
-# This stops Apache from trying to show the /contact/ folder index
+# 1. PRIORITY: If the file actually exists (like style.css), SERVE IT and stop.
+# This prevents the server from trying to turn your CSS into HTML.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# 2. SECURITY: Prevent listing folders
 Options -Indexes
 
-# 2. ROUTE LEGAL FILES (Physical files in the contact folder)
-# znypr.com/contact/impressum -> contact/impressum.html
+# 3. CONTACT/LEGAL: Route specific legal pages
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(contact/.+)$ $1.html [L]
 
-# 3. SERVE REAL ASSETS (Crucial for CSS/JS)
-# If the file exists in root (like style.css), serve it and stop
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^ - [L]
-
-# 4. ROUTE SPA TABS
-# Force clean URLs (gear, contact, merch) to load the index shell
+# 4. SPA ROUTING: Route virtual tabs to index.html
+# Only fires if the file didn't exist (Step 1).
 RewriteRule ^(home|gear|socials|partners|merch|contact)$ index.html [L]
