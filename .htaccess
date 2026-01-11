@@ -1,19 +1,20 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. SERVE REAL FILES (CSS, JS, Images)
-# If the file exists, serve it and stop.
+# 1. SERVE REAL FILES
+# If the file exists (images, style.css, script.js), serve it immediately.
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
 # 2. HANDLE LEGAL PAGES (Impressum/Datenschutz)
-# If url is znypr.com/contact/impressum, load contact/impressum.html
-RewriteRule ^contact/(.*)$ contact/$1.html [L]
+# We change (.*) to (.+) to ensure we only catch actual page names.
+# This prevents "/contact/" from breaking.
+RewriteRule ^contact/(.+)$ contact/$1.html [L]
 
 # 3. FORCE THE "CONTACT" TAB TO LOAD THE APP
-# Without this, the server might try to open the 'contact' folder index.
+# Catches /contact or /contact/ and sends it to the main app.
 RewriteRule ^contact/?$ index.html [L]
 
-# 4. CATCH-ALL FOR SPA (Home, Gear, etc.)
-# Everything else loads index.html, which runs script.js
+# 4. CATCH-ALL FOR SPA
+# Everything else loads index.html
 RewriteRule ^ index.html [L]
