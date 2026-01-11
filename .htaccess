@@ -1,18 +1,12 @@
 RewriteEngine On
 RewriteBase /
 
-# 1. CRITICAL: If the file exists (style.css, images, etc.), SERVE IT AND STOP.
-# This must be the very first rule.
+# 1. If the requested file is a real file (like style.css or an image), serve it.
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# 2. Prevent directory listing
-Options -Indexes -MultiViews
+# 2. Handle the "contact/impressum" pages
+RewriteRule ^contact/(.*)$ contact/$1.html [L]
 
-# 3. Route "contact/..." to the .html files in that folder
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-RewriteRule ^(contact/.+)$ $1.html [L]
-
-# 4. Route your "Tabs" (gear, home, etc.) to index.html
-RewriteRule ^(home|gear|socials|partners|merch|contact)$ index.html [L]
+# 3. Everything else goes to index.html (The App)
+RewriteRule ^ index.html [L]

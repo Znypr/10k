@@ -20,7 +20,7 @@ async function switchTab(tabName, updateHistory = true) {
     try {
         // Fetch the file. Default to home.html if empty
         const file = tabName === '' || tabName === '/' ? 'home' : tabName;
-        const response = await fetch(`/${file}.html`);
+        const response = await fetch(`/pages/${file}.html`);
         
         if (response.ok) {
             contentArea.innerHTML = await response.text();
