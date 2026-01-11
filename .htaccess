@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteRule ^test$ https://google.com [R=302,L]
 
 # Allow extension-less .html access
 RewriteCond %{REQUEST_FILENAME}.html -f
