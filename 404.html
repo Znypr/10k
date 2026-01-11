@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <script>
-    sessionStorage.redirect = location.pathname;
+    sessionStorage.setItem('redirectPath', location.pathname);
     location.replace('/');
   </script>
 </head>

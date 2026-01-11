@@ -127,15 +127,14 @@ window.addEventListener('popstate', (event) => {
 
 // 4. Initial Load Logic (WRAPPED IN DOMContentLoaded)
 document.addEventListener("DOMContentLoaded", () => {
-    // GitHub Pages SPA redirect support
-    const path = (sessionStorage.redirect || window.location.pathname)
-        .replace(/^\/+/, '')
-        .replace(/\/$/, '');
+    // Restore path after GitHub Pages 404 redirect
+    let path = sessionStorage.getItem('redirectPath');
 
-    sessionStorage.removeItem('redirect');
-
-    if (path.startsWith('contact/') && path !== 'contact') {
-        return;
+    if (path) {
+        sessionStorage.removeItem('redirectPath');
+        path = path.replace(/^\/+/, '').replace(/\/$/, '');
+    } else {
+        path = window.location.pathname.replace(/^\/+/, '').replace(/\/$/, '');
     }
 
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
