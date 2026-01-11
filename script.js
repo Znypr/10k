@@ -127,22 +127,21 @@ window.addEventListener('popstate', (event) => {
 
 // 4. Initial Load Logic (WRAPPED IN DOMContentLoaded)
 document.addEventListener("DOMContentLoaded", () => {
-    const path = window.location.pathname.substring(1).replace(/\/$/, ""); 
+    // GitHub Pages SPA redirect support
+    const path = (sessionStorage.redirect || window.location.pathname)
+        .replace(/^\/+/, '')
+        .replace(/\/$/, '');
 
-    // If it's a legal sub-page, let the browser load it normally
+    sessionStorage.removeItem('redirect');
+
     if (path.startsWith('contact/') && path !== 'contact') {
-        // No JS intervention for legal pages
         return;
-    } 
-    
+    }
+
     const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
-    // Handle 'contact' specifically to load the app tab, not the folder
-    let target = path === '' ? 'home' : path;
-    
-    // If user goes to /contact (clean), treat as contact tab
-    if (target === 'contact') {
-        switchTab('contact', false);
-    } else if (validTabs.includes(target)) {
+    const target = path === '' ? 'home' : path;
+
+    if (validTabs.includes(target)) {
         switchTab(target, false);
     } else {
         switchTab('home', false);
