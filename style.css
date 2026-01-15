@@ -840,3 +840,31 @@ footer a:hover { color: #888; }
     font-size: 11px;
     margin-top: 2px;
 }
+
+.top-legal {
+    text-align: center;
+    margin-top: -12px; /* Zieht es näher an den Subtitle */
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.top-legal a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.top-legal a:hover {
+    opacity: 1;
+    color: #fff;
+}
+
+.top-legal .sep {
+    color: var(--ring);
+    margin: 0 4px;
+    font-size: 10px;
+}
