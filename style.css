@@ -870,46 +870,63 @@ footer a:hover { color: #888; }
 }
 
 
+/* --- MOBILE: APPLE 'CONTROL CENTER' LAYOUT --- */
 @media (max-width: 600px) {
     .navbar {
+        /* The Container: Floating Glass Panel */
         flex-direction: column;
-        padding: 12px;
-        gap: 12px;
-        border-radius: 24px;
-        /* Slightly less wide to look like a floating widget */
-        width: 90%; 
+        width: 92%; /* Matches iPhone side margins */
+        margin: 0 auto 24px;
+        padding: 16px;
+        gap: 16px;
+        border-radius: 28px; /* Smooth Apple-style corners */
+        
+        /* The "Apple Glass" Effect */
+        background: rgba(20, 20, 22, 0.65); /* Dark translucent */
+        backdrop-filter: blur(20px) saturate(180%); /* Heavy blur + vibrancy */
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     }
 
     .nav-brand {
         padding: 0;
-        font-size: 15px;
-        letter-spacing: 0.1em;
-        opacity: 0.8;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.5); /* Muted label like iOS headers */
+        text-align: center;
+        width: 100%;
     }
 
     .nav-links {
         display: grid;
-        /* The Magic: 3 columns, 2 rows (fits 6 items perfectly) */
-        grid-template-columns: repeat(3, 1fr); 
+        /* 3 Columns x 2 Rows = 6 Perfect Buttons */
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 8px;
         width: 100%;
     }
 
     .nav-btn {
-        text-align: center;
-        padding: 10px 4px; /* Taller touch targets */
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: none;
+        padding: 12px 0; /* Taller touch targets */
+        border-radius: 14px;
         font-size: 11px;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.05);
-        color: var(--muted);
+        font-weight: 600;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); /* Apple 'Spring' ease */
     }
 
-    /* Active state looks like a lit-up button */
+    /* Active State = "Lit Up" Button (Like toggling WiFi on iPhone) */
     .nav-btn.active {
-        background: #fff;
+        background: #ffffff;
         color: #000;
-        border-color: #fff;
-        box-shadow: 0 2px 10px rgba(255,255,255,0.2);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        transform: scale(1.02);
     }
 }
