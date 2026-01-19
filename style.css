@@ -918,7 +918,7 @@ footer a:hover { color: #888; }
 
 
 /* --- MOBILE: APPLE 'CONTROL CENTER' LAYOUT --- */
-@media (max-width: 1000px) {
+@media (max-width: 800px) {
     .navbar {
         /* The Container: Floating Glass Panel */
         flex-direction: column;
@@ -953,7 +953,7 @@ footer a:hover { color: #888; }
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* The "Glow" */
     
     border-bottom: 1px solid rgba(255,255,255,0.2); /* Brighter divider line */
-}
+   }
 
     .nav-links {
         display: grid;
