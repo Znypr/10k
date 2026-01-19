@@ -133,40 +133,83 @@ footer a:hover { color: #888; }
     font-style: italic;
 }
 
-/* NAVBAR STYLES */
+/* NAVBAR STYLES - UNIVERSAL CONTROL CENTER */
 .navbar {
-    position: sticky; top: 20px; z-index: 100;
-    background: rgba(15, 15, 16, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--ring);
-    border-radius: 100px;
-    padding: 8px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-    width: min(var(--max), 100%);
-    margin-bottom: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Layout: Vertical Stack (Logo Top, Links Bottom) */
+    display: flex; 
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    /* Positioning */
+    position: sticky; 
+    top: 20px; 
+    z-index: 100;
+    
+    /* The "Glass Widget" Look */
+    width: min(var(--max), 94%); /* 600px max, or 94% of screen */
+    margin: 0 auto 24px;
+    padding: 16px;
+    
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    background: rgba(20, 20, 22, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
 }
 
 .nav-brand {
-    font-weight: 900; letter-spacing: -0.05em; font-size: 18px; padding-left: 8px;
-    color: #fff;
+    text-align: center;
+    width: 100%;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Divider Line */
 }
 
-.nav-links { display: flex; gap: 4px; }
+.nav-links { 
+    display: grid;
+    /* 3 Columns x 2 Rows Grid Layout */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px;
+    width: 100%;
+}
 
 .nav-btn {
-    background: transparent; border: none; color: var(--muted);
-    font-weight: 600; font-size: 14px; cursor: pointer;
-    padding: 8px 16px; border-radius: 20px;
-    transition: all 0.2s;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    border: none;
+    padding: 12px 0;
+    border-radius: 12px;
+    
+    font-weight: 600; 
+    font-size: 12px; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-btn:hover { 
+    background: rgba(255,255,255,0.1); 
+    color: #fff; 
+}
 
 .nav-btn.active {
-    background: #fff; color: #000;
+    background: #fff; 
+    color: #000;
+    box-shadow: 0 2px 12px rgba(255,255,255,0.3);
+    transform: scale(1.02);
 }
-
 /* Make sure content area fills space */
 #content-area { width: 100%; display: flex; flex-direction: column; gap: 24px; }
 
@@ -871,7 +914,7 @@ footer a:hover { color: #888; }
 
 
 /* --- MOBILE: APPLE 'CONTROL CENTER' LAYOUT --- */
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
     .navbar {
         /* The Container: Floating Glass Panel */
         flex-direction: column;
