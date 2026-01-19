@@ -919,3 +919,63 @@ footer a:hover { color: #888; }
         background: #fff;
     }
 }
+
+@media (max-width: 600px) {
+    .navbar {
+        /* 1. Maximize width but keep the 'Floating Pill' look */
+        width: 94%;
+        margin-inline: auto; 
+        padding: 0 0 0 16px; /* Padding only on left */
+        gap: 0; /* Remove gap, we manage it inside */
+        justify-content: flex-start;
+        overflow: hidden; /* Clips content to rounded corners */
+    }
+
+    /* 2. Fixed Logo with subtle divider */
+    .nav-brand {
+        flex-shrink: 0;
+        padding: 14px 14px 14px 0;
+        border-right: 1px solid rgba(255,255,255,0.1); /* Subtle separator */
+        z-index: 2;
+        position: relative;
+        background: inherit; /* Matches blurred background */
+    }
+
+    /* 3. The 'Infinite' Scroll Area */
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow-x: auto;
+        padding: 0 16px; /* Padding for the scroll area */
+        flex-grow: 1;
+        
+        /* Smooth Momentum Scrolling (iOS Native Feel) */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; 
+        
+        /* The "Fade Out" effect on the right edge */
+        mask-image: linear-gradient(90deg, #000 85%, transparent);
+        -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    /* 4. Minimalist Text Links (No bulky backgrounds) */
+    .nav-btn {
+        flex-shrink: 0;
+        background: transparent; 
+        border: none;
+        padding: 8px 12px;
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    /* 5. Active State: High Contrast White */
+    .nav-btn.active {
+        background: rgba(255,255,255,0.1); /* Very subtle highlight */
+        color: #fff;
+        font-weight: 700;
+    }
+}
