@@ -1,13 +1,13 @@
 {
     "socials": {
-        "youtube_subs": "52,000",
-        "twitch_followers": "10,200",
-        "tiktok_followers": "32,000",
+        "youtube_subs": "72,000",
+        "twitch_followers": "13,300",
+        "tiktok_followers": "43,000",
         "twitter_followers": "1,050",
-        "discord_members": "3,500"
+        "discord_members": "5,300"
     },
     "goals": {
-        "current_subs": 52000,
+        "current_subs": 72000,
         "goal_subs": 100000,
         "live_status": "offline"
     },
@@ -15,35 +15,35 @@
         "shorts": [
             {
                 "title": "blocking 5 sniper shots at once in rivals!",
-                "views": "2.1M",
+                "views": "2.8M",
                 "thumb": "assets/highlights/short1.png",
-                "link": "https://youtube.com/shorts/LINK_HERE"
+                "link": "https://www.youtube.com/shorts/kr4DxZ5avFI"
             },
             {
                 "title": "Do This To Snipe Faster In Roblox Rivals 🤫",
-                "views": "1.1M",
+                "views": "1.4M",
                 "thumb": "assets/highlights/short2.png",
-                "link": "https://youtube.com/shorts/LINK_HERE"
+                "link": "https://www.youtube.com/shorts/vwwBQFfZdsM"
             },
             {
                 "title": "try this loadout for crazy knife clips",
-                "views": "1M",
+                "views": "1.4M",
                 "thumb": "assets/highlights/short3.png",
-                "link": "https://youtube.com/shorts/LINK_HERE"
+                "link": "https://www.youtube.com/shorts/kr4DxZ5avFI"
             }
         ],
         "videos": [
             {
-                "title": "The *BEST* Settings in Rivals to MASTER Sniping!",
-                "views": "8.3K Views",
+                "title": "Can an Ex-Nemesis Survive Ranked Season 2?",
+                "views": "42K Views",
                 "thumb": "assets/highlights/video1.png",
-                "link": "https://youtu.be/LINK_HERE"
+                "link": "https://www.youtube.com/watch?v=tujiawUxv7Y"
             },
             {
-                "title": "The Day I Hit NEMESIS In RANKED",
-                "views": "6K Views",
+                "title": "The *BEST* Settings in Rivals to MASTER Sniping!",
+                "views": "36K Views",
                 "thumb": "assets/highlights/video2.png",
-                "link": "https://youtu.be/LINK_HERE"
+                "link": "https://www.youtube.com/watch?v=IejL6lcHiFE"
             }
         ]
     }
