@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
         path = window.location.pathname.replace(/^\/+/, '').replace(/\/$/, '');
     }
 
-    const validTabs = ['home', 'gear', 'socials', 'partners', 'merch', 'contact'];
+    const validTabs = ['home', 'gear', 'partners', 'merch', 'contact'];
     const target = path === '' ? 'home' : path;
 
     if (validTabs.includes(target)) {
