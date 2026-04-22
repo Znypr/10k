@@ -4,47 +4,10 @@
         "twitch_followers": "15,300",
         "tiktok_followers": "50,000",
         "twitter_followers": "1,050",
-        "discord_members": "5,300"
+        "discord_members": "5,400"
     },
     "goals": {
-        "current_subs": 82000,
         "goal_subs": 100000,
         "live_status": "offline"
-    },
-    "hall_of_fame": {
-        "shorts": [
-            {
-                "title": "blocking 5 sniper shots at once in rivals!",
-                "views": "2.8M",
-                "thumb": "assets/highlights/short1.png",
-                "link": "https://www.youtube.com/shorts/kr4DxZ5avFI"
-            },
-            {
-                "title": "Do This To Snipe Faster In Roblox Rivals 🤫",
-                "views": "1.4M",
-                "thumb": "assets/highlights/short2.png",
-                "link": "https://www.youtube.com/shorts/vwwBQFfZdsM"
-            },
-            {
-                "title": "try this loadout for crazy knife clips",
-                "views": "1.4M",
-                "thumb": "assets/highlights/short3.png",
-                "link": "https://www.youtube.com/shorts/kr4DxZ5avFI"
-            }
-        ],
-        "videos": [
-            {
-                "title": "Can an Ex-Nemesis Survive Ranked Season 2?",
-                "views": "42K Views",
-                "thumb": "assets/highlights/video1.png",
-                "link": "https://www.youtube.com/watch?v=tujiawUxv7Y"
-            },
-            {
-                "title": "The *BEST* Settings in Rivals to MASTER Sniping!",
-                "views": "36K Views",
-                "thumb": "assets/highlights/video2.png",
-                "link": "https://www.youtube.com/watch?v=IejL6lcHiFE"
-            }
-        ]
     }
 }

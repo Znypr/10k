@@ -70,7 +70,7 @@ async function loadStats() {
         
         const bar = document.getElementById('progress-fill');
         if (bar) {
-            const percent = (data.goals.current_subs / data.goals.goal_subs) * 100;
+            const percent = (data.socials.youtube_subs / data.goals.goal_subs) * 100;
             bar.style.width = percent + "%";
         }
 
