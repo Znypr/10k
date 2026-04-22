@@ -59,11 +59,11 @@ async function loadStats() {
         };
 
         // Socials Tab
-        safeUpdate('stat-yt', data.socials.youtube_subs + " Subscribers");
-        safeUpdate('stat-tt', data.socials.tiktok_followers + " Followers");
-        safeUpdate('stat-tw', data.socials.twitch_followers + " Followers");
-        safeUpdate('stat-x',  data.socials.twitter_followers + " Followers");
-        safeUpdate('stat-di', data.socials.discord_members + " Members");
+        safeUpdate('stat-yt', `${data.socials.youtube_subs} Subscribers`);
+        safeUpdate('stat-tt', `${data.socials.tiktok_followers} Followers`);
+        safeUpdate('stat-tw', `${data.socials.twitch_followers} Followers`);
+        safeUpdate('stat-x',  `${data.socials.twitter_followers} Followers`);
+        safeUpdate('stat-di', `${data.socials.discord_members} Members`);
 
         // Home Tab
         safeUpdate('stat-home-subs', data.socials.youtube_subs);
@@ -83,35 +83,6 @@ async function loadStats() {
                 badge.className = "status-badge status-offline";
                 badge.innerHTML = '<div class="status-dot"></div><span>OFFLINE</span>';
             }
-        }
-
-        // Hall of Fame Automation
-        const shortsContainer = document.getElementById('hof-shorts');
-        if (shortsContainer && data.hall_of_fame) {
-            shortsContainer.innerHTML = data.hall_of_fame.shorts.map(item => `
-                <a href="${item.link}" target="_blank" class="highlight-card">
-                    <div class="thumb-wrap ratio-vertical">
-                        <img src="${item.thumb}" class="thumb-img" alt="Thumbnail">
-                        <div class="view-badge">${item.views}</div>
-                        <div class="type-badge">Short</div>
-                    </div>
-                    <div class="highlight-title">${item.title}</div>
-                </a>
-            `).join('');
-        }
-
-        const videosContainer = document.getElementById('hof-videos');
-        if (videosContainer && data.hall_of_fame) {
-            videosContainer.innerHTML = data.hall_of_fame.videos.map(item => `
-                <a href="${item.link}" target="_blank" class="highlight-card">
-                    <div class="thumb-wrap ratio-landscape">
-                        <img src="${item.thumb}" class="thumb-img" alt="Thumbnail">
-                        <div class="view-badge">${item.views}</div>
-                        <div class="type-badge red-badge">Video</div>
-                    </div>
-                    <div class="highlight-title">${item.title}</div>
-                </a>
-            `).join('');
         }
 
     } catch (error) {
