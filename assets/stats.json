@@ -1,13 +1,40 @@
 {
-    "socials": {
-        "youtube_subs": 86000,
-        "twitch_followers": 23000,
-        "tiktok_followers": 50000,
-        "twitter_followers": 1000,
-        "discord_members": 5300
+  "version": 2,
+  "updatedAt": "2026-06-23T00:00:00.000Z",
+  "metrics": {
+    "gaming": {
+      "youtube": {
+        "value": 86000,
+        "display": "86K",
+        "unit": "subscribers",
+        "source": "existing public snapshot",
+        "status": "seed"
+      },
+      "tiktok": {
+        "value": 50000,
+        "display": "50K",
+        "unit": "followers",
+        "source": "existing public snapshot",
+        "status": "seed"
+      },
+      "facebook": null,
+      "twitch": {
+        "value": 23000,
+        "display": "23K",
+        "unit": "followers",
+        "source": "existing public snapshot",
+        "status": "seed"
+      },
+      "snapchat": null,
+      "instagram": null
     },
-    "goals": {
-        "goal_subs": 100000,
-        "live_status": "offline"
+    "fitness": {
+      "youtube": null,
+      "tiktok": null,
+      "instagram": null,
+      "facebook": null,
+      "snapchat": null,
+      "twitter": null
     }
+  }
 }
