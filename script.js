@@ -1,6 +1,6 @@
 const VALID_TABS = new Set(['home', 'gear', 'partners', 'merch', 'contact', 'hns']);
 const contentArea = document.getElementById('content-area');
-let selectedProfile = localStorage.getItem('znypr-profile') === 'fitness' ? 'fitness' : 'gaming';
+let selectedProfile = 'gaming';
 
 function cleanPath(pathname = window.location.pathname) {
     return pathname.replace(/^\/+|\/+$/g, '') || 'home';
@@ -66,10 +66,7 @@ function activateProfile(profile, { persist = true, scroll = false } = {}) {
     });
 
     document.querySelector('.profile-switcher')?.setAttribute('data-active-profile', profile);
-    if (persist) {
-        selectedProfile = profile;
-        localStorage.setItem('znypr-profile', profile);
-    }
+    if (persist) selectedProfile = profile;
     if (scroll) document.getElementById('creator-channels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
