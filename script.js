@@ -28,6 +28,7 @@ async function switchTab(tabName = 'home', updateHistory = true) {
         const response = await fetch(`/pages/${target}.html`, { cache: 'no-cache' });
         if (!response.ok) throw new Error(`Page request failed: ${response.status}`);
         contentArea.innerHTML = await response.text();
+        initializeProfileDeck();
         await loadStats();
         contentArea.focus({ preventScroll: true });
         document.title = target === 'home'
@@ -47,14 +48,45 @@ async function switchTab(tabName = 'home', updateHistory = true) {
     }
 }
 
+function activateProfile(profile, { persist = true, scroll = false } = {}) {
+    const panel = document.querySelector(`[data-profile-panel="${profile}"]`);
+    if (!panel) return;
+
+    document.querySelectorAll('[data-profile-panel]').forEach((candidate) => {
+        const isActive = candidate.dataset.profilePanel === profile;
+        candidate.classList.toggle('is-active', isActive);
+        candidate.setAttribute('aria-hidden', String(!isActive));
+        candidate.inert = !isActive;
+    });
+
+    document.querySelectorAll('[data-profile-select]').forEach((button) => {
+        const isActive = button.dataset.profileSelect === profile;
+        button.classList.toggle('is-active', isActive);
+        if (button.getAttribute('role') === 'tab') {
+            button.setAttribute('aria-selected', String(isActive));
+            button.tabIndex = isActive ? 0 : -1;
+        }
+    });
+
+    document.querySelector('.profile-switcher')?.setAttribute('data-active-profile', profile);
+    if (persist) localStorage.setItem('znypr-profile', profile);
+    if (scroll) document.getElementById('creator-channels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function initializeProfileDeck() {
+    if (!document.querySelector('[data-profile-panel]')) return;
+    const stored = localStorage.getItem('znypr-profile');
+    activateProfile(stored === 'fitness' ? 'fitness' : 'gaming', { persist: false });
+}
+
 function metricDisplay(metric) {
-    if (metric == null) return 'Not public';
+    if (metric == null) return 'View profile';
     if (typeof metric === 'number') return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(metric);
     if (metric.display) return metric.display;
     if (Number.isFinite(metric.value)) {
         return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(metric.value);
     }
-    return 'Not public';
+    return 'View profile';
 }
 
 function metricExact(metric) {
@@ -95,16 +127,34 @@ async function loadStats() {
         }
     } catch (error) {
         console.error('Metric loading failed:', error);
-        metricNodes.forEach((node) => { node.textContent = 'Live profile'; });
+        metricNodes.forEach((node) => { node.textContent = 'View profile'; });
     }
 }
 
-function bindNavigation() {
+function bindInteractions() {
     document.addEventListener('click', (event) => {
         const tabButton = event.target.closest('[data-tab]');
-        if (!tabButton) return;
+        if (tabButton) {
+            event.preventDefault();
+            switchTab(tabButton.dataset.tab);
+            return;
+        }
+
+        const profileButton = event.target.closest('[data-profile-select]');
+        if (profileButton) {
+            activateProfile(profileButton.dataset.profileSelect, {
+                scroll: profileButton.hasAttribute('data-scroll-to-deck')
+            });
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const currentTab = event.target.closest('.profile-tab');
+        if (!currentTab || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
         event.preventDefault();
-        switchTab(tabButton.dataset.tab);
+        const nextProfile = currentTab.dataset.profileSelect === 'gaming' ? 'fitness' : 'gaming';
+        activateProfile(nextProfile);
+        document.querySelector(`.profile-tab[data-profile-select="${nextProfile}"]`)?.focus();
     });
 
     window.addEventListener('popstate', (event) => {
@@ -113,7 +163,7 @@ function bindNavigation() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    bindNavigation();
+    bindInteractions();
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
     const redirectedPath = sessionStorage.getItem('redirectPath');
