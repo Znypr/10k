@@ -28,7 +28,7 @@ async function switchTab(tabName = 'home', updateHistory = true) {
         const response = await fetch(`/pages/${target}.html`, { cache: 'no-cache' });
         if (!response.ok) throw new Error(`Page request failed: ${response.status}`);
         contentArea.innerHTML = await response.text();
-        initializeProfileDeck();
+        initializeProfileCards();
         await loadStats();
         contentArea.focus({ preventScroll: true });
         document.title = target === 'home'
@@ -55,17 +55,13 @@ function activateProfile(profile, { persist = true, scroll = false } = {}) {
     document.querySelectorAll('[data-profile-panel]').forEach((candidate) => {
         const isActive = candidate.dataset.profilePanel === profile;
         candidate.classList.toggle('is-active', isActive);
-        candidate.setAttribute('aria-hidden', String(!isActive));
-        candidate.inert = !isActive;
+        candidate.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
 
     document.querySelectorAll('[data-profile-select]').forEach((button) => {
         const isActive = button.dataset.profileSelect === profile;
         button.classList.toggle('is-active', isActive);
-        if (button.getAttribute('role') === 'tab') {
-            button.setAttribute('aria-selected', String(isActive));
-            button.tabIndex = isActive ? 0 : -1;
-        }
+        button.setAttribute('aria-pressed', String(isActive));
     });
 
     document.querySelector('.profile-switcher')?.setAttribute('data-active-profile', profile);
@@ -73,7 +69,7 @@ function activateProfile(profile, { persist = true, scroll = false } = {}) {
     if (scroll) document.getElementById('creator-channels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function initializeProfileDeck() {
+function initializeProfileCards() {
     if (!document.querySelector('[data-profile-panel]')) return;
     const stored = localStorage.getItem('znypr-profile');
     activateProfile(stored === 'fitness' ? 'fitness' : 'gaming', { persist: false });
@@ -145,16 +141,32 @@ function bindInteractions() {
             activateProfile(profileButton.dataset.profileSelect, {
                 scroll: profileButton.hasAttribute('data-scroll-to-deck')
             });
+            return;
         }
+
+        const profilePanel = event.target.closest('[data-profile-panel]');
+        if (profilePanel) activateProfile(profilePanel.dataset.profilePanel);
+    });
+
+    document.addEventListener('pointerover', (event) => {
+        if (event.pointerType === 'touch') return;
+        const profilePanel = event.target.closest('[data-profile-panel]');
+        if (!profilePanel || profilePanel.contains(event.relatedTarget)) return;
+        activateProfile(profilePanel.dataset.profilePanel);
+    });
+
+    document.addEventListener('focusin', (event) => {
+        const profilePanel = event.target.closest('[data-profile-panel]');
+        if (profilePanel) activateProfile(profilePanel.dataset.profilePanel);
     });
 
     document.addEventListener('keydown', (event) => {
-        const currentTab = event.target.closest('.profile-tab');
-        if (!currentTab || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        const currentCard = event.target.closest('[data-profile-panel]');
+        if (!currentCard || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
         event.preventDefault();
-        const nextProfile = currentTab.dataset.profileSelect === 'gaming' ? 'fitness' : 'gaming';
+        const nextProfile = currentCard.dataset.profilePanel === 'gaming' ? 'fitness' : 'gaming';
         activateProfile(nextProfile);
-        document.querySelector(`.profile-tab[data-profile-select="${nextProfile}"]`)?.focus();
+        document.querySelector(`[data-profile-panel="${nextProfile}"]`)?.focus();
     });
 
     window.addEventListener('popstate', (event) => {
