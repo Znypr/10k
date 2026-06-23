@@ -4,12 +4,12 @@
   "metrics": {
     "gaming": {
       "youtube": {
-        "value": 106,
-        "display": "106",
-        "source": "YouTube public profile",
+        "value": 86000,
+        "display": "86K",
+        "source": "verified channel value",
         "unit": "subscribers",
         "checkedAt": "2026-06-23T00:49:41.193Z",
-        "status": "live"
+        "status": "verified"
       },
       "tiktok": {
         "value": 50500,
@@ -53,10 +53,10 @@
       "youtube": {
         "value": 106,
         "display": "106",
-        "source": "YouTube public profile",
+        "source": "verified channel value",
         "unit": "subscribers",
         "checkedAt": "2026-06-23T00:49:41.193Z",
-        "status": "live"
+        "status": "verified"
       },
       "tiktok": {
         "value": 66,
