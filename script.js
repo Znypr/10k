@@ -1,5 +1,6 @@
 const VALID_TABS = new Set(['home', 'gear', 'partners', 'merch', 'contact', 'hns']);
 const contentArea = document.getElementById('content-area');
+let selectedProfile = localStorage.getItem('znypr-profile') === 'fitness' ? 'fitness' : 'gaming';
 
 function cleanPath(pathname = window.location.pathname) {
     return pathname.replace(/^\/+|\/+$/g, '') || 'home';
@@ -65,14 +66,16 @@ function activateProfile(profile, { persist = true, scroll = false } = {}) {
     });
 
     document.querySelector('.profile-switcher')?.setAttribute('data-active-profile', profile);
-    if (persist) localStorage.setItem('znypr-profile', profile);
+    if (persist) {
+        selectedProfile = profile;
+        localStorage.setItem('znypr-profile', profile);
+    }
     if (scroll) document.getElementById('creator-channels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function initializeProfileCards() {
     if (!document.querySelector('[data-profile-panel]')) return;
-    const stored = localStorage.getItem('znypr-profile');
-    activateProfile(stored === 'fitness' ? 'fitness' : 'gaming', { persist: false });
+    activateProfile(selectedProfile, { persist: false });
 }
 
 function metricDisplay(metric) {
@@ -152,12 +155,19 @@ function bindInteractions() {
         if (event.pointerType === 'touch') return;
         const profilePanel = event.target.closest('[data-profile-panel]');
         if (!profilePanel || profilePanel.contains(event.relatedTarget)) return;
-        activateProfile(profilePanel.dataset.profilePanel);
+        activateProfile(profilePanel.dataset.profilePanel, { persist: false });
+    });
+
+    document.addEventListener('pointerout', (event) => {
+        if (event.pointerType === 'touch') return;
+        const duo = event.target.closest('.profile-duo');
+        if (!duo || duo.contains(event.relatedTarget)) return;
+        activateProfile(selectedProfile, { persist: false });
     });
 
     document.addEventListener('focusin', (event) => {
         const profilePanel = event.target.closest('[data-profile-panel]');
-        if (profilePanel) activateProfile(profilePanel.dataset.profilePanel);
+        if (profilePanel) activateProfile(profilePanel.dataset.profilePanel, { persist: false });
     });
 
     document.addEventListener('keydown', (event) => {
