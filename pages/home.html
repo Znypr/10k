@@ -24,29 +24,16 @@
         </div>
     </section>
 
-    <section class="profile-switcher" id="creator-channels" aria-label="Choose creator profile">
-        <div class="profile-tabs" role="tablist" aria-label="Gaming or fitness profiles">
-            <button class="profile-tab profile-tab-gaming is-active" type="button" role="tab" aria-selected="true" aria-controls="gaming-panel" data-profile-select="gaming">
-                <span class="profile-tab-dot"></span>
-                <span><strong>Gaming</strong><small>Roblox Rivals · Streams · Shorts</small></span>
-                <span class="profile-tab-arrow">↗</span>
-            </button>
-            <button class="profile-tab profile-tab-fitness" type="button" role="tab" aria-selected="false" aria-controls="fitness-panel" data-profile-select="fitness">
-                <span class="profile-tab-dot"></span>
-                <span><strong>Fitness</strong><small>Bodybuilding · Physique · Lifestyle</small></span>
-                <span class="profile-tab-arrow">↗</span>
-            </button>
-        </div>
-
-        <div class="creator-deck">
-            <section class="surface lane lane-gaming deck-card is-active" id="gaming-panel" role="tabpanel" data-profile-panel="gaming" aria-hidden="false">
+    <section class="profile-switcher" id="creator-channels" aria-label="Gaming and fitness profiles" data-active-profile="gaming">
+        <div class="profile-duo">
+            <section class="surface lane lane-gaming profile-card is-active" data-profile-panel="gaming" tabindex="0" aria-label="Gaming profiles">
                 <div class="lane-head">
                     <div>
                         <span class="lane-label">Gaming</span>
                         <h2>Znypr Gaming</h2>
                         <p class="lane-copy">Roblox Rivals videos, vertical content, livestreams and community events.</p>
                     </div>
-                    <span class="lane-icon" aria-hidden="true">⌁</span>
+                    <span class="profile-focus-label" aria-hidden="true">Gaming</span>
                 </div>
 
                 <div class="social-grid">
@@ -83,14 +70,14 @@
                 </div>
             </section>
 
-            <section class="surface lane lane-fitness deck-card" id="fitness-panel" role="tabpanel" data-profile-panel="fitness" aria-hidden="true" inert>
+            <section class="surface lane lane-fitness profile-card" data-profile-panel="fitness" tabindex="0" aria-label="Fitness profiles">
                 <div class="lane-head">
                     <div>
                         <span class="lane-label">Fitness</span>
                         <h2>Znypr Fitness</h2>
                         <p class="lane-copy">Bodybuilding, physique progress, training clips and creator lifestyle.</p>
                     </div>
-                    <span class="lane-icon" aria-hidden="true">↗</span>
+                    <span class="profile-focus-label" aria-hidden="true">Fitness</span>
                 </div>
 
                 <div class="social-grid">
