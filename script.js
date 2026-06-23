@@ -1,119 +1,125 @@
-// 1. The Main Switcher
-async function switchTab(tabName, updateHistory = true) {
-    // CRITICAL FIX: Find the element *inside* the function to ensure it exists
-    const contentArea = document.getElementById('content-area');
-    if (!contentArea) {
-        console.error("Critical: Could not find #content-area element.");
-        return;
-    }
+const VALID_TABS = new Set(['home', 'gear', 'partners', 'merch', 'contact', 'hns']);
+const contentArea = document.getElementById('content-area');
 
-    // A. Highlight the button
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Handle edge case: 'home' might be '' in the URL
-    const targetBtn = tabName === '' ? 'home' : tabName;
-    // Use a safer selector check
-    const activeBtn = document.querySelector(`button[onclick="switchTab('${targetBtn}')"]`);
-    if(activeBtn) activeBtn.classList.add('active');
+function cleanPath(pathname = window.location.pathname) {
+    return pathname.replace(/^\/+|\/+$/g, '') || 'home';
+}
 
-    // B. Update URL (The Clean URL Magic)
-    if (updateHistory) {
-        const newPath = tabName === 'home' ? '/' : tabName;
-        history.pushState({ tab: tabName }, '', newPath);
-    }
-
-    // C. Load Content
-    try {
-        const file = tabName === '' || tabName === '/' ? 'home' : tabName;
-        // Ensure we look in the pages folder
-        const response = await fetch(`/pages/${file}.html`);
-        
-        if (response.ok) {
-            contentArea.innerHTML = await response.text();
-            
-            // D. Load Stats (Automation)
-            loadStats(); 
-            
-            // E. Re-init Icons (if used)
-            if(window.lucide) window.lucide.createIcons();
-        } else {
-            // If 404, fallback to home (prevent infinite loop)
-            if (tabName !== 'home') switchTab('home');
+function setActiveTab(tabName) {
+    document.querySelectorAll('[data-tab]').forEach((element) => {
+        const isActive = element.dataset.tab === tabName;
+        element.classList.toggle('active', isActive);
+        if (element.classList.contains('nav-btn')) {
+            element.setAttribute('aria-current', isActive ? 'page' : 'false');
         }
-    } catch (e) {
-        console.error(e);
-        contentArea.innerHTML = "<p style='text-align:center'>Error loading content.</p>";
+    });
+}
+
+async function switchTab(tabName = 'home', updateHistory = true) {
+    const target = VALID_TABS.has(tabName) ? tabName : 'home';
+    setActiveTab(target);
+    contentArea.classList.add('is-loading');
+
+    if (updateHistory) {
+        history.pushState({ tab: target }, '', target === 'home' ? '/' : `/${target}`);
+    }
+
+    try {
+        const response = await fetch(`/pages/${target}.html`, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`Page request failed: ${response.status}`);
+        contentArea.innerHTML = await response.text();
+        await loadStats();
+        contentArea.focus({ preventScroll: true });
+        document.title = target === 'home'
+            ? 'ZNYPR — Gaming & Fitness Creator'
+            : `${target.charAt(0).toUpperCase()}${target.slice(1)} — ZNYPR`;
+    } catch (error) {
+        console.error(error);
+        contentArea.innerHTML = `
+            <section class="surface empty-state">
+                <span class="eyebrow">Error</span>
+                <h1>This page could not be loaded.</h1>
+                <button class="button button-primary" type="button" data-retry>Try again</button>
+            </section>`;
+        contentArea.querySelector('[data-retry]')?.addEventListener('click', () => switchTab(target, false));
+    } finally {
+        contentArea.classList.remove('is-loading');
     }
 }
 
-// 2. The Stats Automation
+function metricDisplay(metric) {
+    if (metric == null) return 'Not public';
+    if (typeof metric === 'number') return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(metric);
+    if (metric.display) return metric.display;
+    if (Number.isFinite(metric.value)) {
+        return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(metric.value);
+    }
+    return 'Not public';
+}
+
+function metricExact(metric) {
+    const value = typeof metric === 'number' ? metric : metric?.value;
+    return Number.isFinite(value) ? new Intl.NumberFormat('en-US').format(value) : '';
+}
+
 async function loadStats() {
+    const metricNodes = document.querySelectorAll('[data-stat]');
+    if (!metricNodes.length) return;
+
     try {
-        const response = await fetch('/assets/stats.json');
+        const response = await fetch('/assets/stats.json', { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`Stats request failed: ${response.status}`);
         const data = await response.json();
 
-        // Helpers
-        const safeUpdate = (id, text) => { 
-            const el = document.getElementById(id); 
-            if(el) el.textContent = text; 
-        };
+        metricNodes.forEach((node) => {
+            const [group, platform] = node.dataset.stat.split('.');
+            const metric = data.metrics?.[group]?.[platform];
+            node.textContent = metricDisplay(metric);
+            const exact = metricExact(metric);
+            if (exact) node.title = `${exact} ${metric?.unit || ''}`.trim();
+            node.closest('.social-card')?.classList.toggle('metric-unavailable', !exact && !metric?.display);
+        });
 
-        // Socials Tab
-        safeUpdate('stat-yt', `${data.socials.youtube_subs} Subscribers`);
-        safeUpdate('stat-tt', `${data.socials.tiktok_followers} Followers`);
-        safeUpdate('stat-tw', `${data.socials.twitch_followers} Followers`);
-        safeUpdate('stat-x',  `${data.socials.twitter_followers} Followers`);
-        safeUpdate('stat-di', `${data.socials.discord_members} Members`);
-
-        // Home Tab
-        safeUpdate('stat-home-subs', data.socials.youtube_subs);
-        
-        const bar = document.getElementById('progress-fill');
-        if (bar) {
-            const percent = (data.socials.youtube_subs / data.goals.goal_subs) * 100;
-            bar.style.width = percent + "%";
+        const updated = document.querySelector('[data-stats-updated]');
+        if (updated && data.updatedAt) {
+            const date = new Date(data.updatedAt);
+            updated.textContent = `Metrics refreshed ${new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeStyle: 'short' }).format(date)}`;
         }
 
-        const badge = document.getElementById('status-badge');
-        if (badge) {
-            if (data.goals.live_status === "live") {
-                badge.className = "status-badge status-live";
-                badge.innerHTML = '<div class="status-dot"></div><span>LIVE NOW</span>';
-            } else {
-                badge.className = "status-badge status-offline";
-                badge.innerHTML = '<div class="status-dot"></div><span>OFFLINE</span>';
-            }
+        const totalNode = document.querySelector('[data-total-audience]');
+        if (totalNode) {
+            const total = Object.values(data.metrics || {})
+                .flatMap((group) => Object.values(group || {}))
+                .reduce((sum, metric) => sum + (typeof metric === 'number' ? metric : Number(metric?.value) || 0), 0);
+            totalNode.textContent = total ? `${new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(total)}+` : 'Growing daily';
         }
-
     } catch (error) {
-        console.error("Stats loading failed:", error);
+        console.error('Metric loading failed:', error);
+        metricNodes.forEach((node) => { node.textContent = 'Live profile'; });
     }
 }
 
-// 3. Handle "Back" Button
-window.addEventListener('popstate', (event) => {
-    const tab = event.state ? event.state.tab : 'home';
-    switchTab(tab, false);
+function bindNavigation() {
+    document.addEventListener('click', (event) => {
+        const tabButton = event.target.closest('[data-tab]');
+        if (!tabButton) return;
+        event.preventDefault();
+        switchTab(tabButton.dataset.tab);
+    });
+
+    window.addEventListener('popstate', (event) => {
+        switchTab(event.state?.tab || cleanPath(), false);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    bindNavigation();
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    const redirectedPath = sessionStorage.getItem('redirectPath');
+    if (redirectedPath) sessionStorage.removeItem('redirectPath');
+    const initialTab = cleanPath(redirectedPath || window.location.pathname);
+    switchTab(initialTab, false);
 });
 
-// 4. Initial Load Logic (WRAPPED IN DOMContentLoaded)
-document.addEventListener("DOMContentLoaded", () => {
-    // Restore path after GitHub Pages 404 redirect
-    let path = sessionStorage.getItem('redirectPath');
-
-    if (path) {
-        sessionStorage.removeItem('redirectPath');
-        path = path.replace(/^\/+/, '').replace(/\/$/, '');
-    } else {
-        path = window.location.pathname.replace(/^\/+/, '').replace(/\/$/, '');
-    }
-
-    const validTabs = ['home', 'gear', 'partners', 'merch', 'contact', 'hns'];
-    const target = path === '' ? 'home' : path;
-
-    if (validTabs.includes(target)) {
-        switchTab(target, false);
-    } else {
-        switchTab('home', false);
-    }
-});
+window.switchTab = switchTab;
