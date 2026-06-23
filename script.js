@@ -1,7 +1,13 @@
 const VALID_TABS = new Set(['home', 'gear', 'partners', 'merch', 'contact', 'hns']);
+const SWIPE_TABS = ['home', 'gear', 'partners', 'merch', 'contact'];
+const MOBILE_QUERY = window.matchMedia('(max-width: 900px)');
 const contentArea = document.getElementById('content-area');
+
+let activePageTab = 'home';
 let selectedProfile = 'gaming';
 let hoverActivationTimer = null;
+let profileVisibilityObserver = null;
+let touchStart = null;
 
 function cleanPath(pathname = window.location.pathname) {
     return pathname.replace(/^\/+|\/+$/g, '') || 'home';
@@ -19,8 +25,10 @@ function setActiveTab(tabName) {
 
 async function switchTab(tabName = 'home', updateHistory = true) {
     const target = VALID_TABS.has(tabName) ? tabName : 'home';
+    activePageTab = target;
     setActiveTab(target);
     contentArea.classList.add('is-loading');
+    profileVisibilityObserver?.disconnect();
 
     if (updateHistory) {
         history.pushState({ tab: target }, '', target === 'home' ? '/' : `/${target}`);
@@ -31,6 +39,7 @@ async function switchTab(tabName = 'home', updateHistory = true) {
         if (!response.ok) throw new Error(`Page request failed: ${response.status}`);
         contentArea.innerHTML = await response.text();
         initializeProfileCards();
+        initializeMobileProfileObserver();
         await loadStats();
         contentArea.focus({ preventScroll: true });
         document.title = target === 'home'
@@ -68,12 +77,42 @@ function activateProfile(profile, { persist = true, scroll = false } = {}) {
 
     document.querySelector('.profile-switcher')?.setAttribute('data-active-profile', profile);
     if (persist) selectedProfile = profile;
-    if (scroll) document.getElementById('creator-channels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (scroll) {
+        const target = MOBILE_QUERY.matches ? panel : document.getElementById('creator-channels');
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
 function initializeProfileCards() {
     if (!document.querySelector('[data-profile-panel]')) return;
     activateProfile(selectedProfile, { persist: false });
+}
+
+function initializeMobileProfileObserver() {
+    profileVisibilityObserver?.disconnect();
+    profileVisibilityObserver = null;
+
+    const cards = [...document.querySelectorAll('[data-profile-panel]')];
+    if (!MOBILE_QUERY.matches || cards.length < 2) return;
+
+    const visibility = new Map(cards.map((card) => [card, 0]));
+    profileVisibilityObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => visibility.set(entry.target, entry.intersectionRatio));
+
+        const [mostVisibleCard, ratio] = [...visibility.entries()]
+            .sort((first, second) => second[1] - first[1])[0] || [];
+
+        if (mostVisibleCard && ratio >= 0.16) {
+            activateProfile(mostVisibleCard.dataset.profilePanel, { persist: false });
+        }
+    }, {
+        root: null,
+        rootMargin: '-18% 0px -38% 0px',
+        threshold: [0, 0.1, 0.16, 0.25, 0.4, 0.55, 0.7, 0.85]
+    });
+
+    cards.forEach((card) => profileVisibilityObserver.observe(card));
 }
 
 function metricDisplay(metric) {
@@ -147,6 +186,57 @@ async function loadStats() {
     }
 }
 
+function navigateBySwipe(direction) {
+    const currentIndex = SWIPE_TABS.indexOf(activePageTab);
+    if (currentIndex < 0) return;
+
+    const targetIndex = currentIndex + direction;
+    if (targetIndex < 0 || targetIndex >= SWIPE_TABS.length) return;
+
+    switchTab(SWIPE_TABS[targetIndex]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function bindMobilePageSwipe() {
+    document.addEventListener('touchstart', (event) => {
+        if (!MOBILE_QUERY.matches || event.touches.length !== 1 || contentArea.classList.contains('is-loading')) return;
+        if (event.target.closest('.nav-links, input, textarea, select, [contenteditable="true"], [data-no-page-swipe]')) return;
+
+        const touch = event.touches[0];
+        const edgeGuard = 28;
+        if (touch.clientX <= edgeGuard || touch.clientX >= window.innerWidth - edgeGuard) return;
+
+        touchStart = {
+            x: touch.clientX,
+            y: touch.clientY,
+            time: performance.now()
+        };
+    }, { passive: true });
+
+    document.addEventListener('touchend', (event) => {
+        if (!touchStart || !MOBILE_QUERY.matches || !event.changedTouches.length) {
+            touchStart = null;
+            return;
+        }
+
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - touchStart.x;
+        const deltaY = touch.clientY - touchStart.y;
+        const duration = performance.now() - touchStart.time;
+        touchStart = null;
+
+        const horizontalDistance = Math.abs(deltaX);
+        const verticalDistance = Math.abs(deltaY);
+        if (duration > 850 || horizontalDistance < 72 || horizontalDistance < verticalDistance * 1.45) return;
+
+        navigateBySwipe(deltaX < 0 ? 1 : -1);
+    }, { passive: true });
+
+    document.addEventListener('touchcancel', () => {
+        touchStart = null;
+    }, { passive: true });
+}
+
 function bindInteractions() {
     document.addEventListener('click', (event) => {
         const tabButton = event.target.closest('[data-tab]');
@@ -190,7 +280,9 @@ function bindInteractions() {
 
     document.addEventListener('focusin', (event) => {
         const profilePanel = event.target.closest('[data-profile-panel]');
-        if (profilePanel) activateProfile(profilePanel.dataset.profilePanel, { persist: false });
+        if (profilePanel && !MOBILE_QUERY.matches) {
+            activateProfile(profilePanel.dataset.profilePanel, { persist: false });
+        }
     });
 
     document.addEventListener('keydown', (event) => {
@@ -205,10 +297,16 @@ function bindInteractions() {
     window.addEventListener('popstate', (event) => {
         switchTab(event.state?.tab || cleanPath(), false);
     });
+
+    MOBILE_QUERY.addEventListener('change', () => {
+        initializeProfileCards();
+        initializeMobileProfileObserver();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     bindInteractions();
+    bindMobilePageSwipe();
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
     const redirectedPath = sessionStorage.getItem('redirectPath');
