@@ -1,6 +1,7 @@
 const VALID_TABS = new Set(['home', 'gear', 'partners', 'merch', 'contact', 'hns']);
 const contentArea = document.getElementById('content-area');
 let selectedProfile = 'gaming';
+let hoverActivationTimer = null;
 
 function cleanPath(pathname = window.location.pathname) {
     return pathname.replace(/^\/+|\/+$/g, '') || 'home';
@@ -85,9 +86,18 @@ function metricDisplay(metric) {
     return 'View profile';
 }
 
-function metricExact(metric) {
+function metricValue(metric) {
     const value = typeof metric === 'number' ? metric : metric?.value;
-    return Number.isFinite(value) ? new Intl.NumberFormat('en-US').format(value) : '';
+    return Number.isFinite(value) ? value : 0;
+}
+
+function metricExact(metric) {
+    const value = metricValue(metric);
+    return value ? new Intl.NumberFormat('en-US').format(value) : '';
+}
+
+function compactNumber(value) {
+    return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
 }
 
 async function loadStats() {
@@ -108,6 +118,16 @@ async function loadStats() {
             node.closest('.social-card')?.classList.toggle('metric-unavailable', !exact && !metric?.display);
         });
 
+        document.querySelectorAll('[data-group-total]').forEach((node) => {
+            const group = node.dataset.groupTotal;
+            const total = Object.values(data.metrics?.[group] || {}).reduce((sum, metric) => sum + metricValue(metric), 0);
+            const valueNode = node.querySelector('strong');
+            if (valueNode) valueNode.textContent = total ? compactNumber(total) : '—';
+            node.title = total
+                ? `${new Intl.NumberFormat('en-US').format(total)} known followers and subscribers`
+                : 'No public audience metrics available';
+        });
+
         const updated = document.querySelector('[data-stats-updated]');
         if (updated && data.updatedAt) {
             const date = new Date(data.updatedAt);
@@ -118,8 +138,8 @@ async function loadStats() {
         if (totalNode) {
             const total = Object.values(data.metrics || {})
                 .flatMap((group) => Object.values(group || {}))
-                .reduce((sum, metric) => sum + (typeof metric === 'number' ? metric : Number(metric?.value) || 0), 0);
-            totalNode.textContent = total ? `${new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(total)}+` : 'Growing daily';
+                .reduce((sum, metric) => sum + metricValue(metric), 0);
+            totalNode.textContent = total ? `${compactNumber(total)}+` : 'Growing daily';
         }
     } catch (error) {
         console.error('Metric loading failed:', error);
@@ -152,14 +172,20 @@ function bindInteractions() {
         if (event.pointerType === 'touch') return;
         const profilePanel = event.target.closest('[data-profile-panel]');
         if (!profilePanel || profilePanel.contains(event.relatedTarget)) return;
-        activateProfile(profilePanel.dataset.profilePanel, { persist: false });
+        clearTimeout(hoverActivationTimer);
+        hoverActivationTimer = setTimeout(() => {
+            activateProfile(profilePanel.dataset.profilePanel, { persist: false });
+        }, 45);
     });
 
     document.addEventListener('pointerout', (event) => {
         if (event.pointerType === 'touch') return;
         const duo = event.target.closest('.profile-duo');
         if (!duo || duo.contains(event.relatedTarget)) return;
-        activateProfile(selectedProfile, { persist: false });
+        clearTimeout(hoverActivationTimer);
+        hoverActivationTimer = setTimeout(() => {
+            activateProfile(selectedProfile, { persist: false });
+        }, 70);
     });
 
     document.addEventListener('focusin', (event) => {
