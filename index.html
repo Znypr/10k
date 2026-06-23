@@ -1,36 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script>
-    sessionStorage.redirect = location.pathname;
-    </script>
-
     <base href="/">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZNYPR | Content Creator & Streamer</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#08090d">
+    <meta name="description" content="Znypr — gaming creator, streamer and fitness creator. Official channels, setup, partners and contact information.">
+    <meta property="og:title" content="Znypr — Gaming & Fitness Creator">
+    <meta property="og:description" content="Official gaming and fitness channels from Znypr.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://znypr.com/">
+    <meta property="og:image" content="https://znypr.com/assets/profile.png">
+    <title>ZNYPR — Gaming & Fitness Creator</title>
     <link rel="icon" type="image/png" href="/assets/favicon.png">
-
-    <link rel="stylesheet" href="/style.css?v=2">
+    <link rel="stylesheet" href="/style.css?v=4">
+    <script src="/script.js?v=4" defer></script>
 </head>
 <body>
-    
-    <nav class="navbar">
-        <div class="nav-brand">ZNYPR</div>
-        <div class="nav-links">
-            <button onclick="switchTab('home')" class="nav-btn active">Home</button>
-            <button onclick="switchTab('gear')" class="nav-btn">Gear</button>
-            <button onclick="switchTab('partners')" class="nav-btn">Partners</button>
-            <button onclick="switchTab('merch')" class="nav-btn">Merch</button>
-            <button onclick="switchTab('contact')" class="nav-btn">Contact</button>
+    <a class="skip-link" href="#content-area">Skip to content</a>
+
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <button class="brand" type="button" data-tab="home" aria-label="Znypr home">
+                <span class="brand-mark">Z</span>
+                <span class="brand-copy">
+                    <strong>ZNYPR</strong>
+                    <small>Gaming · Fitness</small>
+                </span>
+            </button>
+
+            <div class="nav-links" role="list">
+                <button type="button" class="nav-btn active" data-tab="home">Home</button>
+                <button type="button" class="nav-btn" data-tab="gear">Setup</button>
+                <button type="button" class="nav-btn" data-tab="partners">Partners</button>
+                <button type="button" class="nav-btn" data-tab="merch">Merch</button>
+                <button type="button" class="nav-btn" data-tab="contact">Contact</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="site-main" id="content-area" tabindex="-1" aria-live="polite">
+        <div class="route-loader" aria-label="Loading page">
+            <span></span><span></span><span></span>
         </div>
-    </nav>
+    </main>
 
-    <main class="wrap" id="content-area"></main>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <strong>ZNYPR</strong>
+                <p>Gaming, livestreaming and fitness content.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/contact/impressum">Impressum</a>
+                <a href="/contact/datenschutz">Datenschutz</a>
+                <a href="mailto:znyprttv@gmail.com">Business</a>
+            </div>
+            <p class="footer-copy">© <span id="current-year"></span> Znypr</p>
+        </div>
+    </footer>
 
-    <script src="/script.js"></script>
-
-
+    <noscript>
+        <div class="noscript">JavaScript is required to load this website.</div>
+    </noscript>
 </body>
 </html>
