@@ -19,7 +19,7 @@ const accounts = {
     instagram: { handle: 'znypr', unit: 'followers', fetcher: fetchInstagram },
     facebook: { handle: 'znyprfit', unit: 'followers', fetcher: fetchFacebook },
     snapchat: { handle: 'znypr', unit: 'followers', fetcher: fetchSnapchat },
-    twitter: { handle: 'znyprfit', unit: 'followers', fetcher: fetchX }
+    twitter: { handle: 'znypr_', unit: 'followers', fetcher: fetchX }
   }
 };
 
